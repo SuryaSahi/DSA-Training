@@ -1,42 +1,66 @@
-class MyCircularQueue:
-    def __init__(self, k: int):
-        self.data = [0]*k
-        self.rear = self.front = 0
-        self.length = 0
-        
+class MyCircularQueue {
 
-    def enQueue(self, value: int) -> bool:
-        if self.isFull():
-            return False
-        
-        self.data[self.rear] = value
-        self.rear = (self.rear + 1)%len(self.data)
-        self.length += 1
-        
-        return True
-        
+    private int arr[];
+    private int front;
+    private int rear;
+    private int key;
 
-    def deQueue(self) -> bool:
-        if self.isEmpty():
-            return False
-        
-        self.front = (self.front + 1)%len(self.data)
-        self.length -= 1
-        
-        return True
-        
+     private int next(int i){ 
+        return (i+1)%key;
+    }
+    private int prev(int i){ 
+        return (i+key-1)%key;
+    }
 
-    def Front(self) -> int:
-        return self.data[self.front] if not self.isEmpty() else -1
-        
+    public MyCircularQueue(int k) {
+        arr = new int [k];
+        key = k;
+        front = -1;
+        rear = -1;
+    }
+    
+    public boolean enQueue(int value) {
+        if(isFull())
+        return false;
+        if(front==-1){
+        front=0;
+        rear=0;
+        arr[rear]=value;
+        return true;
+        }
+        rear = next(rear);
+        arr[rear]=value;
+        return true;
 
-    def Rear(self) -> int:
-        return self.data[self.rear-1] if not self.isEmpty() else -1
-        
-
-    def isEmpty(self) -> bool:
-        return self.length == 0
-        
-
-    def isFull(self) -> bool:
-        return self.length == len(self.data)
+    }
+    
+    public boolean deQueue() {
+        if(isEmpty())return false;
+        if(front == rear)
+        {
+            front = -1;
+            rear = -1;
+            return true;
+        }
+        front = next(front);
+        return true;
+    }
+    
+    public int Front() {
+        if(front == -1)return -1;
+        return arr[front];
+    }
+    
+    public int Rear() {
+        if(rear == -1)return -1;
+        return arr[rear];
+    }
+    
+    public boolean isEmpty() {
+        return front == -1;
+    }
+    
+    public boolean isFull() {
+        return front != -1 && next(rear) == front;
+    }
+}
